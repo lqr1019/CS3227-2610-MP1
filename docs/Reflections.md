@@ -31,10 +31,4 @@ a reviewable software-engineering process. It makes each release easier to
 inspect, keeps documentation synchronized, and gives the user control over
 when changes become committed history.
 
-## Current reflection
 
-The first step exposed an environment risk: the workspace has Java 17 and no
-system Gradle command, while the product requires Java 25 and Gradle. Recording
-that mismatch early prevents claiming that the project has been locally
-verified when it has not. Future steps should continue to separate verified
-behavior from configured-but-not-yet-executed behavior.
