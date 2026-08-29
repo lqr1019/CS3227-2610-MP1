@@ -1,6 +1,6 @@
 # BudgetWise Developer Guide
 
-## Release 0.1.0
+## Release 0.2.0
 
 BudgetWise is an offline Java SE 25 desktop application built with JavaFX and
 Gradle. The repository currently contains an application shell and a JUnit 5
@@ -9,10 +9,13 @@ data in memory as requested.
 
 ## Architecture
 
-The application currently has one entry-point class, `budgetwise.BudgetApp`,
-which extends JavaFX `Application` and creates the primary stage. The UI is
-intentionally a small shell so domain, service, and presentation components can
-be introduced independently in later steps.
+The entry point, `budgetwise.BudgetApp`, extends JavaFX `Application` and
+creates the primary stage. The domain layer now contains immutable
+`Transaction` and `Category` records, a `TransactionType` enum, and an
+in-memory `CategoryCatalog`. Domain validation is independent of JavaFX.
+
+The UI remains an intentionally small shell so service and presentation
+components can be introduced independently in later steps.
 
 The intended layers are:
 
