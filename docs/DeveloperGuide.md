@@ -29,11 +29,11 @@ The intended layers are:
 ## Build and test process
 
 The Gradle build targets Java 25 through the Java toolchain configuration and
-uses JavaFX Controls. JUnit 5 is used for automated tests. Run `gradle test`
-for tests and `gradle run` to launch the desktop application until the Gradle
-wrapper is added. Each feature must add or update tests in the same
-implementation step. Documentation and summary logs are updated with each
-release step.
+uses JavaFX Controls. JUnit 5 is used for automated tests, including the JUnit
+Platform launcher at runtime. Run `gradle test` for tests and `gradle run` to
+launch the desktop application until the Gradle wrapper is added. Each feature
+must add or update tests in the same implementation step. Documentation and
+summary logs are updated with each release step.
 
 ## Coding standards
 

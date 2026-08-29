@@ -39,3 +39,11 @@ lookup, and duplicate handling.
 The owner requested proceeding to Step 3. The transaction-history service was
 added with in-memory CRUD operations, newest-first ordering, text search,
 type/category filters, inclusive date ranges, validation, and unit tests.
+
+## Toolchain interaction
+
+The owner requested installation of Java 25 and Gradle. Homebrew installed
+OpenJDK 25.0.4.1 and Gradle 9.7.1. Running the test suite exposed and resolved
+a Gradle settings/project repository conflict and a missing JUnit Platform
+launcher runtime dependency. The project test suite now completes
+successfully with Java 25.
