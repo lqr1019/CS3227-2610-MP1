@@ -49,6 +49,12 @@ tests cover parsing and validation. The full Gradle test suite passed with Java
 25 after correcting one compile-time exception declaration and a JavaFX generic
 warning.
 
+## Category display correction interaction
+
+The owner reported that category dropdowns displayed the record representation
+instead of only the category name. `Category.toString()` now returns the name,
+and a regression assertion verifies the display value.
+
 ## Step 5 interaction and outcome
 
 The owner requested the next step. Monthly overall and category budgets were

@@ -12,6 +12,7 @@ class CategoryTest {
     @Test
     void trimsNamesAndTracksWhetherCategoryIsCustom() {
         assertEquals("Food", new Category(" Food ", false).name());
+        assertEquals("Food", new Category(" Food ", false).toString());
         assertFalse(Category.builtIn("Food").custom());
         assertTrue(Category.custom("Travel").custom());
     }

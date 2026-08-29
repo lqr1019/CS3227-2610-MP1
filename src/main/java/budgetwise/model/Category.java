@@ -23,4 +23,10 @@ public record Category(String name, boolean custom) {
     public static Category custom(String name) {
         return new Category(name, true);
     }
+
+    /** Returns the display name used by user-interface controls. */
+    @Override
+    public String toString() {
+        return name;
+    }
 }
