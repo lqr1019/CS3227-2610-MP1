@@ -55,6 +55,12 @@ The owner requested the next step. Monthly overall and category budgets were
 added with in-memory storage, duplicate-scope validation, spending and
 remaining calculations, a JavaFX budget tab, and unit tests.
 
+## Step 6 interaction and outcome
+
+The owner requested the next step. Monthly dashboard summaries were added with
+income, expenses, balance, daily expense aggregation, a JavaFX line chart, and
+unit tests.
+
 ## Validation correction interaction
 
 The owner reported that the displayed error did not match an empty payment

@@ -2,9 +2,9 @@
 
 ## Current release
 
-This guide describes release 0.4.0. The current release provides a JavaFX
-transaction-entry, history, and budget-management screens. Dashboards, charts,
-and reports are not available yet.
+This guide describes release 0.5.0. The current release provides a JavaFX
+transaction-entry, history, budget-management, and monthly dashboard screens.
+Category pie/bar reports are not available yet.
 
 ## Requirements
 
@@ -48,3 +48,7 @@ categories” for an overall budget or select a category for a category budget.
 Enter the month as `YYYY-MM` and a positive limit. The table shows the matching
 expense total and remaining amount; a negative remaining amount means the
 budget is overspent. Select a budget and choose “Delete selected” to remove it.
+
+Open the “Dashboard” tab to select a month using `YYYY-MM` and view total
+income, total expenses, balance, and a daily expense line chart. Select
+“Refresh” after changing the month.

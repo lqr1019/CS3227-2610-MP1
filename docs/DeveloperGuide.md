@@ -1,6 +1,6 @@
 # BudgetWise Developer Guide
 
-## Release 0.4.0
+## Release 0.5.0
 
 BudgetWise is an offline Java SE 25 desktop application built with JavaFX and
 Gradle. The repository currently contains an application shell and a JUnit 5
@@ -20,8 +20,8 @@ expense aggregation. The UI layer contains `MainView` and `BudgetView`, which
 wire transaction entry, budgets, custom-category creation, searchable history,
 editing, and deletion to those services.
 
-The UI currently focuses on transaction entry and history; budget and reporting
-components will be introduced independently in later steps.
+The UI currently provides transaction entry, history, budgets, and a monthly
+dashboard; category reports will be introduced independently in later steps.
 
 The intended layers are:
 

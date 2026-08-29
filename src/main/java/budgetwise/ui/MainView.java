@@ -51,6 +51,7 @@ public final class MainView extends BorderPane {
     private final TableView<Transaction> historyTable = new TableView<>();
     private final Button saveButton = new Button("Add transaction");
     private BudgetView budgetView;
+    private DashboardView dashboardView;
     private Transaction selectedTransaction;
 
     /** Creates a view backed by the supplied in-memory stores. */
@@ -68,11 +69,14 @@ public final class MainView extends BorderPane {
 
     private Node buildTabs() {
         budgetView = new BudgetView(budgetStore, store, categoryCatalog.all().toArray(Category[]::new));
+        dashboardView = new DashboardView(store);
         Tab historyTab = new Tab("Transactions", buildHistory());
         Tab budgetTab = new Tab("Budgets", budgetView);
+        Tab dashboardTab = new Tab("Dashboard", dashboardView);
         historyTab.setClosable(false);
         budgetTab.setClosable(false);
-        return new TabPane(historyTab, budgetTab);
+        dashboardTab.setClosable(false);
+        return new TabPane(dashboardTab, historyTab, budgetTab);
     }
 
     private void configureFields() {
@@ -177,6 +181,7 @@ public final class MainView extends BorderPane {
             clearForm();
             refreshHistory();
             budgetView.refresh();
+            dashboardView.refresh();
         } catch (RuntimeException exception) {
             showError(exception.getMessage());
         }
@@ -188,6 +193,7 @@ public final class MainView extends BorderPane {
             clearForm();
             refreshHistory();
             budgetView.refresh();
+            dashboardView.refresh();
         }
     }
 
