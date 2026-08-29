@@ -86,6 +86,11 @@ app. Java built-in object serialization now stores transactions, categories,
 and budgets in `data/budgetwise-data.ser`, with a temporary-directory reload
 test.
 
+## Version naming interaction
+
+The owner requested the project version name be changed to `V1.0`. Gradle and
+the maintained project guides now use `V1.0` consistently.
+
 ## Toolchain interaction
 
 The owner requested installation of Java 25 and Gradle. Homebrew installed

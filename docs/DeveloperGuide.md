@@ -1,6 +1,6 @@
 # BudgetWise Developer Guide
 
-## Release 0.8.0
+## Release V1.0
 
 BudgetWise is an offline Java SE 25 desktop application built with JavaFX and
 Gradle. Application data is persisted locally using Java built-in object

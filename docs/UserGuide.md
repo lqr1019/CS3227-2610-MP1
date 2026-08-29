@@ -2,7 +2,7 @@
 
 ## Current release
 
-This guide describes release 0.8.0. The current release provides JavaFX
+This guide describes release V1.0. The current release provides JavaFX
 transaction-entry, history, budget-management, monthly dashboard, and reports
 screens.
 
