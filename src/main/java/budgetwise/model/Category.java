@@ -3,7 +3,7 @@ package budgetwise.model;
 import java.util.Objects;
 
 /** A label used to classify a transaction. */
-public record Category(String name, boolean custom) {
+public record Category(String name, boolean custom) implements java.io.Serializable {
 
     /** Creates a category with a non-blank, trimmed name. */
     public Category {

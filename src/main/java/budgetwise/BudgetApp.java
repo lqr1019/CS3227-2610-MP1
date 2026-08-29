@@ -5,6 +5,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import budgetwise.model.CategoryCatalog;
 import budgetwise.service.TransactionStore;
+import budgetwise.service.BudgetStore;
+import budgetwise.service.PersistenceService;
+import java.nio.file.Path;
 import budgetwise.ui.MainView;
 
 /** Entry point for the BudgetWise desktop application. */
@@ -18,7 +21,17 @@ public final class BudgetApp extends Application {
     @Override
     public void start(Stage stage) {
         stage.setTitle(WINDOW_TITLE);
-        stage.setScene(new Scene(new MainView(new TransactionStore(), new CategoryCatalog()), WINDOW_WIDTH, WINDOW_HEIGHT));
+        Path dataDirectory = Path.of("data");
+        PersistenceService persistence = new PersistenceService();
+        PersistenceService.SavedData savedData = persistence.load(dataDirectory);
+        CategoryCatalog categoryCatalog = new CategoryCatalog();
+        savedData.categories().forEach(categoryCatalog::restore);
+        TransactionStore transactionStore = new TransactionStore();
+        savedData.transactions().forEach(transactionStore::add);
+        BudgetStore budgetStore = new BudgetStore();
+        savedData.budgets().forEach(budgetStore::add);
+        stage.setScene(new Scene(new MainView(transactionStore, categoryCatalog, budgetStore,
+                persistence, dataDirectory), WINDOW_WIDTH, WINDOW_HEIGHT));
         stage.show();
     }
 

@@ -29,15 +29,18 @@ public final class BudgetView extends BorderPane {
     private final BudgetStore budgetStore;
     private final TransactionStore transactionStore;
     private final BudgetCalculator calculator = new BudgetCalculator();
+    private final Runnable onDataChanged;
     private final TextField monthField = new TextField(YearMonth.now().toString());
     private final TextField limitField = new TextField();
     private final ComboBox<Category> categoryField = new ComboBox<>();
     private final TableView<Budget> table = new TableView<>();
 
     /** Creates a budget view backed by the supplied in-memory stores. */
-    public BudgetView(BudgetStore budgetStore, TransactionStore transactionStore, Category[] categories) {
+    public BudgetView(BudgetStore budgetStore, TransactionStore transactionStore, Category[] categories,
+            Runnable onDataChanged) {
         this.budgetStore = budgetStore;
         this.transactionStore = transactionStore;
+        this.onDataChanged = onDataChanged;
         categoryField.getItems().setAll(categories);
         categoryField.getItems().add(0, null);
         categoryField.setValue(null);
@@ -103,6 +106,7 @@ public final class BudgetView extends BorderPane {
                     categoryField.getValue(), new BigDecimal(limitField.getText().trim())));
             limitField.clear();
             refresh();
+            onDataChanged.run();
         } catch (RuntimeException exception) {
             new Alert(Alert.AlertType.ERROR, "Enter a valid month (YYYY-MM) and positive limit.", ButtonType.OK)
                     .showAndWait();
@@ -114,6 +118,7 @@ public final class BudgetView extends BorderPane {
         if (selected != null) {
             budgetStore.delete(selected.id());
             refresh();
+            onDataChanged.run();
         }
     }
 }

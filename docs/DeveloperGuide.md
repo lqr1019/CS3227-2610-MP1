@@ -1,11 +1,10 @@
 # BudgetWise Developer Guide
 
-## Release 0.7.0
+## Release 0.8.0
 
 BudgetWise is an offline Java SE 25 desktop application built with JavaFX and
-Gradle. The repository currently contains an application shell and a JUnit 5
-test. There is no persistence layer yet; future releases will keep application
-data in memory as requested.
+Gradle. Application data is persisted locally using Java built-in object
+serialization; no database is used.
 
 ## Architecture
 
@@ -19,7 +18,8 @@ service validation are independent of JavaFX. The service layer also contains
 expense aggregation. The UI layer contains `MainView`, `BudgetView`,
 `DashboardView`, and `ReportView`, which wire transaction entry, budgets,
 custom-category creation, searchable history, editing, deletion, dashboards,
-and reports to those services.
+and reports to those services. `PersistenceService` saves and loads all
+transactions, categories, and budgets from `data/budgetwise-data.ser`.
 
 The UI currently provides transaction entry, history, budgets, a monthly
 dashboard, and reports. `ReportCalculator` aggregates expense data by

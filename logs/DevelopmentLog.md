@@ -79,6 +79,13 @@ The owner reported that the displayed error did not match an empty payment
 field. The form service was changed to preserve field-specific messages, and a
 regression test now verifies the exact payment-method message.
 
+## Local persistence interaction
+
+The owner requested that application data remain available after restarting the
+app. Java built-in object serialization now stores transactions, categories,
+and budgets in `data/budgetwise-data.ser`, with a temporary-directory reload
+test.
+
 ## Toolchain interaction
 
 The owner requested installation of Java 25 and Gradle. Homebrew installed

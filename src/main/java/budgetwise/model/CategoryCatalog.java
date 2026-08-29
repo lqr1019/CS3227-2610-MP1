@@ -49,6 +49,16 @@ public final class CategoryCatalog {
                 .orElseThrow();
     }
 
+    /** Restores a previously saved category without changing its custom flag. */
+    public void restore(Category category) {
+        Objects.requireNonNull(category, "category");
+        boolean duplicate = categories.stream()
+                .anyMatch(existing -> existing.name().equalsIgnoreCase(category.name()));
+        if (!duplicate) {
+            categories.add(category);
+        }
+    }
+
     /** Finds a category by name, ignoring case and surrounding whitespace. */
     public Category find(String name) {
         Objects.requireNonNull(name, "name");

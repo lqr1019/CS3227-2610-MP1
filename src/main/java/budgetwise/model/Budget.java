@@ -6,7 +6,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 /** A spending limit for one month, optionally restricted to a category. */
-public record Budget(UUID id, YearMonth month, Category category, BigDecimal limit) {
+public record Budget(UUID id, YearMonth month, Category category, BigDecimal limit)
+        implements java.io.Serializable {
 
     /** Creates a validated budget. A null category represents an overall budget. */
     public Budget {

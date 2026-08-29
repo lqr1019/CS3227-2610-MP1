@@ -5,6 +5,8 @@ import budgetwise.model.Transaction;
 import budgetwise.model.TransactionType;
 import budgetwise.service.TransactionFormService;
 import budgetwise.service.BudgetStore;
+import budgetwise.service.PersistenceService;
+import java.nio.file.Path;
 import budgetwise.service.TransactionStore;
 import java.time.LocalDate;
 import java.util.List;
@@ -38,7 +40,9 @@ public final class MainView extends BorderPane {
     private final TransactionStore store;
     private final budgetwise.model.CategoryCatalog categoryCatalog;
     private final TransactionFormService formService = new TransactionFormService();
-    private final BudgetStore budgetStore = new BudgetStore();
+    private final BudgetStore budgetStore;
+    private final PersistenceService persistenceService;
+    private final Path dataDirectory;
     private final ComboBox<String> typeField = new ComboBox<>();
     private final TextField amountField = new TextField();
     private final DatePicker dateField = new DatePicker(LocalDate.now());
@@ -56,9 +60,13 @@ public final class MainView extends BorderPane {
     private Transaction selectedTransaction;
 
     /** Creates a view backed by the supplied in-memory stores. */
-    public MainView(TransactionStore store, budgetwise.model.CategoryCatalog categoryCatalog) {
+    public MainView(TransactionStore store, budgetwise.model.CategoryCatalog categoryCatalog,
+            BudgetStore budgetStore, PersistenceService persistenceService, Path dataDirectory) {
         this.store = Objects.requireNonNull(store, "store");
         this.categoryCatalog = Objects.requireNonNull(categoryCatalog, "categoryCatalog");
+        this.budgetStore = Objects.requireNonNull(budgetStore, "budgetStore");
+        this.persistenceService = Objects.requireNonNull(persistenceService, "persistenceService");
+        this.dataDirectory = Objects.requireNonNull(dataDirectory, "dataDirectory");
         configureFields();
         setPadding(new Insets(18));
         setTop(buildHeader());
@@ -69,7 +77,7 @@ public final class MainView extends BorderPane {
     }
 
     private Node buildTabs() {
-        budgetView = new BudgetView(budgetStore, store, categoryCatalog.all().toArray(Category[]::new));
+        budgetView = new BudgetView(budgetStore, store, categoryCatalog.all().toArray(Category[]::new), this::persist);
         dashboardView = new DashboardView(store);
         reportView = new ReportView(store);
         Tab historyTab = new Tab("Transactions", buildHistory());
@@ -187,6 +195,7 @@ public final class MainView extends BorderPane {
             budgetView.refresh();
             dashboardView.refresh();
             reportView.refresh();
+            persist();
         } catch (RuntimeException exception) {
             showError(exception.getMessage());
         }
@@ -200,6 +209,7 @@ public final class MainView extends BorderPane {
             budgetView.refresh();
             dashboardView.refresh();
             reportView.refresh();
+            persist();
         }
     }
 
@@ -265,6 +275,7 @@ public final class MainView extends BorderPane {
                 categoryCatalog.addCustom(name);
                 refreshCategories();
                 budgetView.updateCategories(categoryCatalog.all().toArray(Category[]::new));
+                persist();
             } catch (RuntimeException exception) {
                 showError(exception.getMessage());
             }
@@ -273,6 +284,14 @@ public final class MainView extends BorderPane {
 
     private void showError(String message) {
         new Alert(Alert.AlertType.ERROR, message, ButtonType.OK).showAndWait();
+    }
+
+    private void persist() {
+        try {
+            persistenceService.save(dataDirectory, categoryCatalog.all(), store.all(), budgetStore.all());
+        } catch (IllegalStateException exception) {
+            showError("Unable to save data locally: " + exception.getMessage());
+        }
     }
 
     private static javafx.util.StringConverter<Category> categoryConverter() {

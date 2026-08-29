@@ -13,7 +13,7 @@ public record Transaction(
         LocalDate date,
         Category category,
         String paymentMethod,
-        String notes) {
+        String notes) implements java.io.Serializable {
 
     /** Creates a validated transaction, trimming text fields. */
     public Transaction {
