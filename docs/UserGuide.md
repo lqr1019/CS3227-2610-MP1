@@ -2,11 +2,9 @@
 
 ## Current release
 
-This guide describes release 0.3.0. The current release provides the
-BudgetWise desktop application shell and in-memory transaction-history
-foundation. The visible application still displays only the application name
-and a welcome message in a JavaFX window. Transaction recording, history,
-budgets, dashboards, charts, and reports are not available from the UI yet.
+This guide describes release 0.4.0. The current release provides a JavaFX
+transaction-entry and history screen. Budgets, dashboards, charts, and reports
+are not available yet.
 
 ## Requirements
 
@@ -15,9 +13,8 @@ budgets, dashboards, charts, and reports are not available from the UI yet.
   testing release.
 - macOS, Windows, or Linux with a graphical desktop environment.
 
-The application is designed to work offline. The current domain and history
-service hold data only while the application is running; the UI does not yet create or
-display transactions.
+The application is designed to work offline. All transaction and category data
+is held in memory and is lost when the application closes.
 
 ## Setup and test
 
@@ -34,6 +31,14 @@ offline.
 
 ## Using the current release
 
-Run the application using the command above. A window titled “BudgetWise”
-appears with a welcome message. Close the window using the operating system
-window controls.
+Run the application using the command above. The “Transaction” panel accepts
+income or expense type, a positive amount, an ISO date (`YYYY-MM-DD`), a
+category, payment method, and optional notes. Select “Add transaction” to add
+the record. Select a row to edit it, then select “Save changes”; select
+“Delete selected” to remove it. “Clear” resets the form.
+
+Use “New category” to create a custom category. The history panel can search
+category, payment method, and notes, and can filter by type or category. History
+is shown newest first. Invalid amount, date, type, or required fields produce
+an error dialog identifying the invalid field, such as “Payment method cannot
+be empty”.

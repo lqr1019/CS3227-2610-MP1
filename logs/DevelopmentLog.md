@@ -40,6 +40,21 @@ The owner requested proceeding to Step 3. The transaction-history service was
 added with in-memory CRUD operations, newest-first ordering, text search,
 type/category filters, inclusive date ranges, validation, and unit tests.
 
+## Step 4 interaction and outcome
+
+The owner requested the next step. A JavaFX transaction-entry and history view
+was added with add/edit/delete actions, custom-category creation, text search,
+type/category filters, and error dialogs. A form conversion service and unit
+tests cover parsing and validation. The full Gradle test suite passed with Java
+25 after correcting one compile-time exception declaration and a JavaFX generic
+warning.
+
+## Validation correction interaction
+
+The owner reported that the displayed error did not match an empty payment
+field. The form service was changed to preserve field-specific messages, and a
+regression test now verifies the exact payment-method message.
+
 ## Toolchain interaction
 
 The owner requested installation of Java 25 and Gradle. Homebrew installed
