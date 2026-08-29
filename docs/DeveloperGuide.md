@@ -14,9 +14,11 @@ creates the primary stage. The domain layer now contains immutable
 `Transaction` and `Category` records, a `TransactionType` enum, and an
 in-memory `CategoryCatalog`. The service layer now contains `TransactionStore`,
 which supports CRUD operations and combined search/filter queries. Domain and
-service validation are independent of JavaFX. The UI layer now contains
-`MainView`, which wires transaction entry, custom-category creation, searchable
-history, editing, and deletion to those services.
+service validation are independent of JavaFX. The service layer also contains
+`BudgetStore` and `BudgetCalculator` for monthly overall/category limits and
+expense aggregation. The UI layer contains `MainView` and `BudgetView`, which
+wire transaction entry, budgets, custom-category creation, searchable history,
+editing, and deletion to those services.
 
 The UI currently focuses on transaction entry and history; budget and reporting
 components will be introduced independently in later steps.

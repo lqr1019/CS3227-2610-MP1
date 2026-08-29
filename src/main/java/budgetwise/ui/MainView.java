@@ -4,6 +4,7 @@ import budgetwise.model.Category;
 import budgetwise.model.Transaction;
 import budgetwise.model.TransactionType;
 import budgetwise.service.TransactionFormService;
+import budgetwise.service.BudgetStore;
 import budgetwise.service.TransactionStore;
 import java.time.LocalDate;
 import java.util.List;
@@ -20,6 +21,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
@@ -35,6 +38,7 @@ public final class MainView extends BorderPane {
     private final TransactionStore store;
     private final budgetwise.model.CategoryCatalog categoryCatalog;
     private final TransactionFormService formService = new TransactionFormService();
+    private final BudgetStore budgetStore = new BudgetStore();
     private final ComboBox<String> typeField = new ComboBox<>();
     private final TextField amountField = new TextField();
     private final DatePicker dateField = new DatePicker(LocalDate.now());
@@ -46,6 +50,7 @@ public final class MainView extends BorderPane {
     private final ComboBox<Category> categoryFilter = new ComboBox<>();
     private final TableView<Transaction> historyTable = new TableView<>();
     private final Button saveButton = new Button("Add transaction");
+    private BudgetView budgetView;
     private Transaction selectedTransaction;
 
     /** Creates a view backed by the supplied in-memory stores. */
@@ -56,9 +61,18 @@ public final class MainView extends BorderPane {
         setPadding(new Insets(18));
         setTop(buildHeader());
         setLeft(buildForm());
-        setCenter(buildHistory());
+        setCenter(buildTabs());
         refreshCategories();
         refreshHistory();
+    }
+
+    private Node buildTabs() {
+        budgetView = new BudgetView(budgetStore, store, categoryCatalog.all().toArray(Category[]::new));
+        Tab historyTab = new Tab("Transactions", buildHistory());
+        Tab budgetTab = new Tab("Budgets", budgetView);
+        historyTab.setClosable(false);
+        budgetTab.setClosable(false);
+        return new TabPane(historyTab, budgetTab);
     }
 
     private void configureFields() {
@@ -162,6 +176,7 @@ public final class MainView extends BorderPane {
             }
             clearForm();
             refreshHistory();
+            budgetView.refresh();
         } catch (RuntimeException exception) {
             showError(exception.getMessage());
         }
@@ -172,6 +187,7 @@ public final class MainView extends BorderPane {
             store.delete(selectedTransaction.id());
             clearForm();
             refreshHistory();
+            budgetView.refresh();
         }
     }
 

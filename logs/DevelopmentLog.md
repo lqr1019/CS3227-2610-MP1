@@ -49,6 +49,12 @@ tests cover parsing and validation. The full Gradle test suite passed with Java
 25 after correcting one compile-time exception declaration and a JavaFX generic
 warning.
 
+## Step 5 interaction and outcome
+
+The owner requested the next step. Monthly overall and category budgets were
+added with in-memory storage, duplicate-scope validation, spending and
+remaining calculations, a JavaFX budget tab, and unit tests.
+
 ## Validation correction interaction
 
 The owner reported that the displayed error did not match an empty payment

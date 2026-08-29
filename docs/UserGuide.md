@@ -3,8 +3,8 @@
 ## Current release
 
 This guide describes release 0.4.0. The current release provides a JavaFX
-transaction-entry and history screen. Budgets, dashboards, charts, and reports
-are not available yet.
+transaction-entry, history, and budget-management screens. Dashboards, charts,
+and reports are not available yet.
 
 ## Requirements
 
@@ -42,3 +42,9 @@ category, payment method, and notes, and can filter by type or category. History
 is shown newest first. Invalid amount, date, type, or required fields produce
 an error dialog identifying the invalid field, such as “Payment method cannot
 be empty”.
+
+Open the “Budgets” tab to add a monthly budget. Leave the category as “All
+categories” for an overall budget or select a category for a category budget.
+Enter the month as `YYYY-MM` and a positive limit. The table shows the matching
+expense total and remaining amount; a negative remaining amount means the
+budget is overspent. Select a budget and choose “Delete selected” to remove it.
