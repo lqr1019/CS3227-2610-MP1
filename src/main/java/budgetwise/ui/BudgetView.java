@@ -7,6 +7,7 @@ import budgetwise.service.BudgetStore;
 import budgetwise.service.TransactionStore;
 import java.math.BigDecimal;
 import java.time.YearMonth;
+import java.util.Arrays;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
@@ -56,6 +57,14 @@ public final class BudgetView extends BorderPane {
     /** Refreshes budget usage after a transaction changes. */
     public void refresh() {
         table.setItems(FXCollections.observableArrayList(budgetStore.all()));
+    }
+
+    /** Replaces the category choices after a custom category is created. */
+    public void updateCategories(Category[] categories) {
+        Category selected = categoryField.getValue();
+        categoryField.getItems().setAll(Arrays.asList(categories));
+        categoryField.getItems().add(0, null);
+        categoryField.setValue(selected);
     }
 
     private HBox buildControls() {

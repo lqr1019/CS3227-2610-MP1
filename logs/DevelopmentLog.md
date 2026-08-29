@@ -67,6 +67,12 @@ The owner requested the next step. Monthly dashboard summaries were added with
 income, expenses, balance, daily expense aggregation, a JavaFX line chart, and
 unit tests.
 
+## Step 7 interaction and outcome
+
+The owner requested the next step. Report aggregation by category, day, week,
+and month was added with a JavaFX Reports tab using pie, line, and bar charts,
+plus unit tests.
+
 ## Validation correction interaction
 
 The owner reported that the displayed error did not match an empty payment
@@ -80,3 +86,9 @@ OpenJDK 25.0.4.1 and Gradle 9.7.1. Running the test suite exposed and resolved
 a Gradle settings/project repository conflict and a missing JUnit Platform
 launcher runtime dependency. The project test suite now completes
 successfully with Java 25.
+
+## Step 8 interaction and outcome
+
+The owner requested the next step. Integration polish synchronized newly added
+categories with the budget selector, added precise empty-date validation and a
+regression test, and added the Gradle wrapper for peer setup.

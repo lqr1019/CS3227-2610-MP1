@@ -2,15 +2,14 @@
 
 ## Current release
 
-This guide describes release 0.5.0. The current release provides a JavaFX
-transaction-entry, history, budget-management, and monthly dashboard screens.
-Category pie/bar reports are not available yet.
+This guide describes release 0.7.0. The current release provides JavaFX
+transaction-entry, history, budget-management, monthly dashboard, and reports
+screens.
 
 ## Requirements
 
 - Java Development Kit (JDK) 25.
-- Gradle 8.14 or newer. A Gradle wrapper will be added before the first peer
-  testing release.
+- The included Gradle wrapper.
 - macOS, Windows, or Linux with a graphical desktop environment.
 
 The application is designed to work offline. All transaction and category data
@@ -21,8 +20,8 @@ is held in memory and is lost when the application closes.
 From the project root, run:
 
 ```text
-gradle test
-gradle run
+./gradlew test
+./gradlew run
 ```
 
 The first Gradle run downloads build dependencies from Maven Central, so
@@ -52,3 +51,8 @@ budget is overspent. Select a budget and choose “Delete selected” to remove 
 Open the “Dashboard” tab to select a month using `YYYY-MM` and view total
 income, total expenses, balance, and a daily expense line chart. Select
 “Refresh” after changing the month.
+
+Open the “Reports” tab to choose spending by category, day, week, or month.
+Category reports use a pie chart; day reports use a line chart; week and month
+reports use bar charts. The selected month applies to category, day, and week
+reports. Month reports include every month represented by recorded expenses.

@@ -50,4 +50,12 @@ class TransactionFormServiceTest {
 
         assertEquals("Payment method cannot be empty", exception.getMessage());
     }
+
+    @Test
+    void reportsEmptyDatePrecisely() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> service.create("expense", "10", "  ", food, "Cash", ""));
+
+        assertEquals("Date cannot be empty", exception.getMessage());
+    }
 }

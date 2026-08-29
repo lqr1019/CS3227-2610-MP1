@@ -1,6 +1,6 @@
 # BudgetWise Developer Guide
 
-## Release 0.5.0
+## Release 0.7.0
 
 BudgetWise is an offline Java SE 25 desktop application built with JavaFX and
 Gradle. The repository currently contains an application shell and a JUnit 5
@@ -16,12 +16,15 @@ in-memory `CategoryCatalog`. The service layer now contains `TransactionStore`,
 which supports CRUD operations and combined search/filter queries. Domain and
 service validation are independent of JavaFX. The service layer also contains
 `BudgetStore` and `BudgetCalculator` for monthly overall/category limits and
-expense aggregation. The UI layer contains `MainView` and `BudgetView`, which
-wire transaction entry, budgets, custom-category creation, searchable history,
-editing, and deletion to those services.
+expense aggregation. The UI layer contains `MainView`, `BudgetView`,
+`DashboardView`, and `ReportView`, which wire transaction entry, budgets,
+custom-category creation, searchable history, editing, deletion, dashboards,
+and reports to those services.
 
-The UI currently provides transaction entry, history, budgets, and a monthly
-dashboard; category reports will be introduced independently in later steps.
+The UI currently provides transaction entry, history, budgets, a monthly
+dashboard, and reports. `ReportCalculator` aggregates expense data by
+category, day, ISO week, and calendar month. `ReportView` renders these as pie,
+line, and bar charts.
 
 The intended layers are:
 
@@ -35,7 +38,7 @@ The intended layers are:
 The Gradle build targets Java 25 through the Java toolchain configuration and
 uses JavaFX Controls. JUnit 5 is used for automated tests, including the JUnit
 Platform launcher at runtime. Run `gradle test` for tests and `gradle run` to
-launch the desktop application until the Gradle wrapper is added. Each feature
+launch the desktop application. The Gradle wrapper uses version 9.7.1. Each feature
 must add or update tests in the same implementation step. Documentation and
 summary logs are updated with each release step.
 

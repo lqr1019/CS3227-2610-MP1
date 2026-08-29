@@ -52,6 +52,7 @@ public final class MainView extends BorderPane {
     private final Button saveButton = new Button("Add transaction");
     private BudgetView budgetView;
     private DashboardView dashboardView;
+    private ReportView reportView;
     private Transaction selectedTransaction;
 
     /** Creates a view backed by the supplied in-memory stores. */
@@ -70,13 +71,16 @@ public final class MainView extends BorderPane {
     private Node buildTabs() {
         budgetView = new BudgetView(budgetStore, store, categoryCatalog.all().toArray(Category[]::new));
         dashboardView = new DashboardView(store);
+        reportView = new ReportView(store);
         Tab historyTab = new Tab("Transactions", buildHistory());
         Tab budgetTab = new Tab("Budgets", budgetView);
         Tab dashboardTab = new Tab("Dashboard", dashboardView);
+        Tab reportTab = new Tab("Reports", reportView);
         historyTab.setClosable(false);
         budgetTab.setClosable(false);
         dashboardTab.setClosable(false);
-        return new TabPane(dashboardTab, historyTab, budgetTab);
+        reportTab.setClosable(false);
+        return new TabPane(dashboardTab, historyTab, budgetTab, reportTab);
     }
 
     private void configureFields() {
@@ -169,10 +173,10 @@ public final class MainView extends BorderPane {
     private void saveTransaction() {
         try {
             Transaction transaction = selectedTransaction == null
-                    ? formService.create(typeField.getValue(), amountField.getText(), dateField.getValue().toString(),
+                    ? formService.create(typeField.getValue(), amountField.getText(), dateText(),
                     categoryField.getValue(), paymentMethodField.getText(), notesField.getText())
                     : formService.update(selectedTransaction.id(), typeField.getValue(), amountField.getText(),
-                    dateField.getValue().toString(), categoryField.getValue(), paymentMethodField.getText(), notesField.getText());
+                    dateText(), categoryField.getValue(), paymentMethodField.getText(), notesField.getText());
             if (selectedTransaction == null) {
                 store.add(transaction);
             } else {
@@ -182,6 +186,7 @@ public final class MainView extends BorderPane {
             refreshHistory();
             budgetView.refresh();
             dashboardView.refresh();
+            reportView.refresh();
         } catch (RuntimeException exception) {
             showError(exception.getMessage());
         }
@@ -194,6 +199,7 @@ public final class MainView extends BorderPane {
             refreshHistory();
             budgetView.refresh();
             dashboardView.refresh();
+            reportView.refresh();
         }
     }
 
@@ -258,6 +264,7 @@ public final class MainView extends BorderPane {
             try {
                 categoryCatalog.addCustom(name);
                 refreshCategories();
+                budgetView.updateCategories(categoryCatalog.all().toArray(Category[]::new));
             } catch (RuntimeException exception) {
                 showError(exception.getMessage());
             }
@@ -280,5 +287,9 @@ public final class MainView extends BorderPane {
                 return null;
             }
         };
+    }
+
+    private String dateText() {
+        return dateField.getValue() == null ? "" : dateField.getValue().toString();
     }
 }
