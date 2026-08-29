@@ -3,7 +3,7 @@
 BudgetWise is an offline JavaFX desktop application for students and employees
 to record transactions, manage budgets, and understand their spending.
 
-## Current release: 0.8.0
+## Current release: 1.0
 
 BudgetWise currently supports:
 
