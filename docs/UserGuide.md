@@ -2,10 +2,10 @@
 
 ## Current release
 
-This guide describes release 0.2.0. The current release provides the
-BudgetWise desktop application shell and its in-memory transaction/category
-domain foundation. The visible application still displays only the application
-name and a welcome message in a JavaFX window. Transaction recording, history,
+This guide describes release 0.3.0. The current release provides the
+BudgetWise desktop application shell and in-memory transaction-history
+foundation. The visible application still displays only the application name
+and a welcome message in a JavaFX window. Transaction recording, history,
 budgets, dashboards, charts, and reports are not available from the UI yet.
 
 ## Requirements
@@ -15,8 +15,8 @@ budgets, dashboards, charts, and reports are not available from the UI yet.
   testing release.
 - macOS, Windows, or Linux with a graphical desktop environment.
 
-The application is designed to work offline. The current domain objects hold
-data only while the application is running; the UI does not yet create or
+The application is designed to work offline. The current domain and history
+service hold data only while the application is running; the UI does not yet create or
 display transactions.
 
 ## Setup and test

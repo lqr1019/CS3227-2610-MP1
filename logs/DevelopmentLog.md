@@ -33,3 +33,9 @@ The owner requested proceeding to Step 2. The domain foundation was added with
 validated immutable transactions, transaction types, built-in/custom
 categories, an in-memory category catalog, and unit tests for validation,
 lookup, and duplicate handling.
+
+## Step 3 interaction and outcome
+
+The owner requested proceeding to Step 3. The transaction-history service was
+added with in-memory CRUD operations, newest-first ordering, text search,
+type/category filters, inclusive date ranges, validation, and unit tests.
