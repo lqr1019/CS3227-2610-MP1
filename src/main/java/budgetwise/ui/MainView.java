@@ -161,7 +161,7 @@ public final class MainView extends BorderPane {
         TableColumn<Transaction, String> payment = column("Payment", Transaction::paymentMethod);
         TableColumn<Transaction, String> notes = column("Notes", Transaction::notes);
         historyTable.getColumns().setAll(date, type, amount, category, payment, notes);
-        historyTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+        historyTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         historyTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> loadSelection(newValue));
         Button deleteButton = new Button("Delete selected");

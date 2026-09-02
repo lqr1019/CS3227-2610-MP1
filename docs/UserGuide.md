@@ -26,6 +26,9 @@ From the project root, run:
 ./gradlew run
 ```
 
+To launch the packaged application after building it, run
+`java -jar build/libs/budgetwise-V1.0.jar`.
+
 The first Gradle run downloads build dependencies from Maven Central, so
 network access is required for initial setup. Subsequent application use is
 offline.

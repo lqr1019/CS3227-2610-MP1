@@ -104,3 +104,25 @@ successfully with Java 25.
 The owner requested the next step. Integration polish synchronized newly added
 categories with the budget selector, added precise empty-date validation and a
 regression test, and added the Gradle wrapper for peer setup.
+
+## JAR runtime correction interaction
+
+The owner reported that the JAR could not load JavaFX classes. The Gradle JAR
+task now bundles runtime dependencies while retaining the main-class manifest.
+The rebuilt JAR contains both `budgetwise.BudgetApp` and
+`javafx.application.Application`.
+
+The owner then reported JavaFX’s missing-runtime message when launching the
+fat JAR. The manifest now starts a non-`Application` `budgetwise.Launcher`,
+which bootstraps `BudgetApp` and avoids JavaFX’s special module-path launcher
+check.
+
+## JavaFX platform correction interaction
+
+The owner reported that `./gradlew run` selected an incompatible Windows
+x86_64 JavaFX native library on an Apple Silicon Mac. The build now selects a
+single JavaFX classifier based on the host operating system, so macOS uses the
+macOS native runtime and Windows/Linux builds select their own runtime.
+
+The JavaFX dependency is aligned to version 25.0.1 to match the project's
+Java 25 toolchain. JavaFX 25 requires JDK 23 or newer.

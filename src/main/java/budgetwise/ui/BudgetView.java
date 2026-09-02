@@ -90,7 +90,7 @@ public final class BudgetView extends BorderPane {
                 column("Limit", budget -> budget.limit().toPlainString()),
                 column("Spent", budget -> calculator.spent(budget, transactionStore.all()).toPlainString()),
                 column("Remaining", budget -> calculator.remaining(budget, transactionStore.all()).toPlainString()));
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         return table;
     }
 

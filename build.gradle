@@ -1,7 +1,7 @@
 plugins {
     id 'application'
     id 'java'
-    id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'com.gradleup.shadow' version '9.5.1'
 }
 
 group = 'budgetwise'
@@ -13,22 +13,52 @@ java {
     }
 }
 
-javafx {
-    version = '25.0.1'
-    modules = ['javafx.controls']
-}
-
 application {
-    mainClass = 'budgetwise.BudgetApp'
+    mainClass = 'budgetwise.Launcher'
 }
 
 tasks.named('jar') {
+    enabled = false
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.collect { file ->
+            file.isDirectory() ? file : zipTree(file)
+        }
+    }
     manifest {
         attributes('Main-Class': application.mainClass.get())
     }
 }
 
+tasks.named('shadowJar') {
+    archiveClassifier.set('')
+}
+
+tasks.named('startScripts') {
+    dependsOn tasks.named('shadowJar')
+}
+
+tasks.named('distZip') {
+    dependsOn tasks.named('shadowJar')
+}
+
+tasks.named('distTar') {
+    dependsOn tasks.named('shadowJar')
+}
+
 dependencies {
+    String javaFxVersion = '25.0.1'
+    String osName = org.gradle.internal.os.OperatingSystem.current().isMacOsX()
+            ? 'mac'
+            : org.gradle.internal.os.OperatingSystem.current().isWindows() ? 'win' : 'linux'
+    String architecture = System.getProperty('os.arch').toLowerCase()
+    boolean isArm = architecture.contains('aarch64') || architecture.contains('arm64')
+    String javaFxClassifier = isArm ? "${osName}-aarch64" : osName
+
+    implementation("org.openjfx:javafx-base:${javaFxVersion}:${javaFxClassifier}")
+    implementation("org.openjfx:javafx-controls:${javaFxVersion}:${javaFxClassifier}")
+    implementation("org.openjfx:javafx-fxml:${javaFxVersion}:${javaFxClassifier}")
+    implementation("org.openjfx:javafx-graphics:${javaFxVersion}:${javaFxClassifier}")
     testImplementation platform('org.junit:junit-bom:5.12.2')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
