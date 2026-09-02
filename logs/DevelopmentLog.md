@@ -124,5 +124,27 @@ x86_64 JavaFX native library on an Apple Silicon Mac. The build now selects a
 single JavaFX classifier based on the host operating system, so macOS uses the
 macOS native runtime and Windows/Linux builds select their own runtime.
 
+The owner reported that the Shadow JAR still crashed on Windows. Shadow JAR
+was removed; the project now uses the standard JavaFX Gradle plugin and
+platform-specific `installDist` distributions, which keep JavaFX native files
+outside the application JAR.
+
+## Direct JAR launch requirement interaction
+
+The owner clarified that peer users will receive only a JAR and will run it
+with `java -jar` from an otherwise empty folder. The standard `jar` task now
+bundles the runtime classpath and uses the non-Application launcher, producing
+a platform-specific self-contained JAR. Each target OS/architecture must have
+its own build.
+
+The runtime-selection implementation was completed without Shadow JAR. The
+executable JAR stores platform JavaFX artifacts as nested JARs and the pure-JDK
+launcher extracts only the matching OS/architecture artifacts before starting
+JavaFX.
+
+The owner then reported that `./gradlew run` still selected the Windows runtime.
+The Gradle `run` task now filters its classpath to the host OS/architecture as
+well, while direct JAR launches continue to select their runtime dynamically.
+
 The JavaFX dependency is aligned to version 25.0.1 to match the project's
 Java 25 toolchain. JavaFX 25 requires JDK 23 or newer.

@@ -38,22 +38,28 @@ The first Gradle run downloads build dependencies. Application data is saved
 automatically in the `data/` directory relative to the application working
 directory and is loaded when the application starts.
 
-## Build a JAR
+## Build the executable JAR
 
 ```text
 ./gradlew clean jar
 ```
 
-The generated artifact is placed in `build/libs/budgetwise-V1.0.jar`.
-The JAR includes the `budgetwise.Launcher` main-class entry and JavaFX runtime
-dependencies. Run it with:
+The generated file is:
 
 ```text
-java -jar build/libs/budgetwise-V1.0.jar
+build/libs/budgetwise-V1.0.jar
 ```
 
-The JAR is platform-specific because JavaFX includes native runtime files. If
-you build on another operating system, build the JAR again on that platform.
+Copy the JAR into an empty folder and run it from that folder:
+
+```text
+java -jar "budgetwise-V1.0.jar"
+```
+
+The JAR includes separate JavaFX runtime libraries for Windows, Linux, macOS
+Intel, and macOS Apple Silicon. The launcher selects and extracts the matching
+runtime automatically, so the same JAR can be copied to an empty folder on any
+supported platform and launched with `java -jar`.
 
 See [docs/UserGuide.md](docs/UserGuide.md) for setup and usage instructions and
 [docs/DeveloperGuide.md](docs/DeveloperGuide.md) for the design.

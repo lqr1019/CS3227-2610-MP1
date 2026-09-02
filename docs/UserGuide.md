@@ -26,8 +26,12 @@ From the project root, run:
 ./gradlew run
 ```
 
-To launch the packaged application after building it, run
-`java -jar build/libs/budgetwise-V1.0.jar`.
+To create the executable JAR, run `./gradlew clean jar`. Copy
+`build/libs/budgetwise-V1.0.jar` into an empty folder and run
+`java -jar "budgetwise-V1.0.jar"`. The JAR includes JavaFX runtime classes and
+native libraries for the operating system and CPU architecture on which it was
+built. The JAR contains the supported platform runtimes separately and selects
+the matching one automatically at startup.
 
 The first Gradle run downloads build dependencies from Maven Central, so
 network access is required for initial setup. Subsequent application use is
