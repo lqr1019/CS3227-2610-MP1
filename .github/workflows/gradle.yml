@@ -1,0 +1,126 @@
+name: Build and test BudgetWise JAR
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test-jar:
+    name: Test JAR on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: gradle
+
+      - name: Build and test on macOS/Linux
+        if: runner.os != 'Windows'
+        run: ./gradlew clean test jar
+
+      - name: Build and test on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: .\gradlew.bat clean test jar
+
+      - name: Prepare empty JAR test folder on macOS/Linux
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          mkdir -p jar-test
+          cp build/libs/budgetwise-V1.0.jar jar-test/budgetwise-V1.0.jar
+
+      - name: Prepare empty JAR test folder on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path jar-test
+          Copy-Item build/libs/budgetwise-V1.0.jar jar-test/budgetwise-V1.0.jar
+
+      - name: Launch JAR on Ubuntu
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          cd jar-test
+          set +e
+          timeout 20s xvfb-run -a java -jar budgetwise-V1.0.jar > jar-output.log 2>&1
+          exit_code=$?
+          set -e
+
+          if [ "$exit_code" -ne 124 ]; then
+            echo "The JAR exited before the startup timeout."
+            cat jar-output.log
+            exit 1
+          fi
+
+          echo "JAR remained running for 20 seconds."
+
+      - name: Launch JAR on macOS
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          cd jar-test
+          java -jar budgetwise-V1.0.jar > jar-output.log 2>&1 &
+          app_pid=$!
+
+          sleep 10
+
+          if ! kill -0 "$app_pid" 2>/dev/null; then
+            echo "The JAR exited during startup."
+            cat jar-output.log
+            exit 1
+          fi
+
+          kill "$app_pid"
+          wait "$app_pid" || true
+          echo "JAR started successfully."
+
+      - name: Launch JAR on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $process = Start-Process `
+            -FilePath java `
+            -ArgumentList '-jar', 'budgetwise-V1.0.jar' `
+            -WorkingDirectory "$PWD\jar-test" `
+            -RedirectStandardOutput "$PWD\jar-test\jar-output.log" `
+            -RedirectStandardError "$PWD\jar-test\jar-error.log" `
+            -PassThru
+
+          Start-Sleep -Seconds 10
+
+          if ($process.HasExited) {
+            Write-Host "The JAR exited during startup."
+            Get-Content "$PWD\jar-test\jar-output.log" -ErrorAction SilentlyContinue
+            Get-Content "$PWD\jar-test\jar-error.log" -ErrorAction SilentlyContinue
+            exit 1
+          }
+
+          Stop-Process -Id $process.Id -Force
+          Write-Host "JAR started successfully."
+
+      - name: Upload JAR and startup logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: budgetwise-${{ matrix.os }}
+          path: |
+            build/libs/budgetwise-V1.0.jar
+            jar-test/jar-output.log
+            jar-test/jar-error.log
+          if-no-files-found: ignore
