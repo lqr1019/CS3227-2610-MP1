@@ -117,6 +117,10 @@ fat JAR. The manifest now starts a non-`Application` `budgetwise.Launcher`,
 which bootstraps `BudgetApp` and avoids JavaFX’s special module-path launcher
 check.
 
+CI testing then showed that the launcher extracted native platform JARs but
+omitted the shared JavaFX class JARs. The selection now extracts both shared
+JavaFX libraries and only the matching platform-native libraries.
+
 ## JavaFX platform correction interaction
 
 The owner reported that `./gradlew run` selected an incompatible Windows

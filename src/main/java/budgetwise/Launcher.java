@@ -37,15 +37,13 @@ public final class Launcher {
             classpath.add(applicationJar.toUri().toURL());
             try (JarFile jarFile = new JarFile(applicationJar.toFile())) {
                 jarFile.stream()
-                        .filter(entry -> entry.getName().startsWith(JAVAFX_DIRECTORY))
-                        .filter(entry -> entry.getName().endsWith(".jar"))
-                        .filter(entry -> entry.getName().contains("-" + platformClassifier() + ".jar"))
+                        .filter(Launcher::isJavaFxLibrary)
                         .map(entry -> extractedLibraries.resolve(Path.of(entry.getName()).getFileName()))
                         .map(Launcher::toUrl)
                         .forEach(classpath::add);
             }
             try (URLClassLoader classLoader = new URLClassLoader(
-                    classpath.toArray(URL[]::new), Launcher.class.getClassLoader())) {
+                    classpath.toArray(URL[]::new), ClassLoader.getPlatformClassLoader())) {
                 Thread.currentThread().setContextClassLoader(classLoader);
                 Class<?> entryPoint = Class.forName("budgetwise.JavaFxLauncher", true, classLoader);
                 entryPoint.getMethod("main", String[].class).invoke(null, (Object) args);
@@ -59,9 +57,7 @@ public final class Launcher {
         Path directory = Files.createTempDirectory("budgetwise-javafx-");
         try (JarFile jarFile = new JarFile(applicationJar.toFile())) {
             jarFile.stream()
-                    .filter(entry -> entry.getName().startsWith(JAVAFX_DIRECTORY))
-                    .filter(entry -> entry.getName().endsWith(".jar"))
-                    .filter(entry -> entry.getName().contains("-" + platformClassifier() + ".jar"))
+                    .filter(Launcher::isJavaFxLibrary)
                     .forEach(entry -> extract(jarFile, entry, directory));
         }
         return directory;
@@ -90,5 +86,15 @@ public final class Launcher {
         String operatingSystem = os.contains("win") ? "win" : os.contains("mac") ? "mac" : "linux";
         boolean arm = architecture.contains("aarch64") || architecture.contains("arm64");
         return arm ? operatingSystem + "-aarch64" : operatingSystem;
+    }
+
+    private static boolean isJavaFxLibrary(JarEntry entry) {
+        String name = entry.getName();
+        if (!name.startsWith(JAVAFX_DIRECTORY) || !name.endsWith(".jar")) {
+            return false;
+        }
+        String selectedMarker = "-" + platformClassifier() + ".jar";
+        return !name.matches(".*-(win|mac|mac-aarch64|linux)\\.jar")
+                || name.endsWith(selectedMarker);
     }
 }
