@@ -45,6 +45,10 @@ directory and is loaded when the application starts.
 ```
 
 The generated artifact is placed in `build/libs/`.
+The JAR includes the `budgetwise.BudgetApp` main-class entry in its manifest.
+Because JavaFX runtime modules are platform-specific dependencies, use
+`./gradlew run` or `./gradlew installDist` to launch the application with all
+required runtime files.
 
 See [docs/UserGuide.md](docs/UserGuide.md) for setup and usage instructions and
 [docs/DeveloperGuide.md](docs/DeveloperGuide.md) for the design.
